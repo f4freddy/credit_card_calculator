@@ -1,7 +1,11 @@
 (function(){
-  showHideFixedPayment();
+
 
 })();
+
+var amounts = [];
+var interests = [];
+var index =0 ;
 
   function populateValue(inPars){
 	var balanceVal = $("#balance").val();
@@ -30,14 +34,44 @@
 }
 
 function showHideFixedPayment(inPars){
+  
   $("#fixedpayment").show();
+  calculateInterest(2000,18,35,0)
+  
+
+}
+function hideHideFixedPayment(inPars){
+  $("#fixedpayment").hide();
+}
+
+
+function calculateInterest(amount, interstRate, fixedAmount,previousInterest ){
+  
+  var interest = Math.round((amount * interstRate)/(100*12))
+  
+  var remainingAmount = Math.round((amount+interest)-fixedAmount);
+  amounts.push(remainingAmount);
+ 
+  previousInterest +=interest;
+  interests.push(previousInterest);
+  index++;
+  if(remainingAmount > 0){
+    calculateInterest(remainingAmount, interstRate, fixedAmount,previousInterest )
+  }else{
+    
+    console.log(Math.floor(index/12));
+    ploatMap()
+  }
   
   
+}
+
+function ploatMap(){
   new Chartist.Line('.ct-chart', {
   labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
   series: [   
-    [2, 1, 3.5, 7, 3],
-    [1, 3, 4, 5, 6]
+            amounts,
+            interests
   ]
 },{
   seriesBarDistance: 10,
@@ -51,7 +85,4 @@ function showHideFixedPayment(inPars){
     },
     scaleMinSpace: 15
   }} );
-}
-function hideHideFixedPayment(inPars){
-  $("#fixedpayment").hide();
 }
