@@ -1,0 +1,57 @@
+<html>
+    <head>
+          <link rel="stylesheet" type="text/css" href="./css/style.css">
+        <script src="./js/index.js" ></script> 
+        <script src="./js/jquery-3.2.1.min.js" ></script> 
+        <script src="./js/ss.js" ></script> 
+    </head>
+    <body>
+        <div id="content">
+            <table class="panel" align="center">               
+                <tbody><tr>
+                        <td>Credit Card Balance</td>
+                        <td align="right">
+                        <input type="text" name="balance" id="balance" value="2000" class="innormal indollar"></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>Interest Rate</td>
+                        <td align="right">
+                        <input type="text" name="rate" id="rate" value="18" class="innormal inpct"></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>Minimum Payment</td>
+                        <td align="right"><input type="text" name="minimum" id="minimum" value="35" class="innormal indollar"></td>
+                        <td>or use
+                            <a href="#" onclick="return populateValue(1);">Interest + 1% of Balance</a>,
+                            <a href="#" onclick="return populateValue(2);">2%</a>,
+                            <a href="#" onclick="return populateValue(3);">3%</a>,
+                            <a href="#" onclick="return populateValue(4);">4%</a>,
+                            <a href="#" onclick="return populateValue(5);">5%</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top">How you plan to payoff? </td>
+                        <td colspan="2">
+                            <label for="payoffoption1"><input name="payoffoption" id="payoffoption1" value="0" type="radio" onclick="hideHideFixedPayment();" checked="">minimum payment</label><br>
+                            <label for="payoffoption2"><input name="payoffoption" id="payoffoption2" value="1" type="radio" onclick="showHideFixedPayment();">other fixed amount</label>
+                            <p id="fixedpayment" style="display: none;">
+                                &nbsp; &nbsp; &nbsp; &nbsp;pay <input type="text" name="fixedpaymentamount" value="35" class="in4char indollar"> per month
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center"><input type="hidden" name="ctype" id="ctype" value="1"><input type="image" src="//d26tpo4cm8sb6k.cloudfront.net/img/calculate.png" value="Calculate" alt="Calculate"></td>
+                        <td>&nbsp;</td>
+                    </tr>
+
+                </tbody></table>
+            
+                <div class="ct-chart">
+                
+            </div>
+
+        </div>
+    </body>
+</html>
