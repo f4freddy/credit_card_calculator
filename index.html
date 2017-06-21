@@ -1,23 +1,66 @@
 <html>
     <head>
-          <link rel="stylesheet" type="text/css" href="./css/style.css">
-        <script src="./js/index.js" ></script> 
+        <link rel="stylesheet" type="text/css" href="./css/style.css">
         <script src="./js/jquery-3.2.1.min.js" ></script> 
-        <script src="./js/ss.js" ></script> 
+        <script src="./js/ss.js" ></script>
+        <title>Credit Card Calculator</title>
     </head>
     <body>
+        
         <div id="content">
+            <h2>Payback a Certain Amount</h2>
+            
+            <p class="verybigtext" id="errorMsg"></p>
+            <p class="verybigtext" id="errorMsg3"></p>
+            
+            <div id="result_section" style="display: none;">
+                <div class="line-chart" >
+                    <div class="bigtext" style="text-align:center;"><b>Balance/Interest Graph</b></div>
+                   
+                    <div class="ct-chart"></div>
+                   
+                </div>
+                <div class="pi-chart">
+                    <div class="bigtext" style="text-align:center;"><b>Breakdown</b></div>
+                    <div class="ct-chart-pi"></div>
+                    <div class="message_container" >
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="155" height="215" style="margin-top: -120">
+                        <g class="highcharts-legend" zIndex="7" transform="translate(36,158)">
+                        <rect rx="5" ry="5" fill="none" x="0.5" y="0.5" width="82" height="38" stroke="#909090" stroke-width="1" visibility="visible"></rect>
+                        <g zIndex="1">
+                        <g>
+                        <g class="highcharts-legend-item" zIndex="1" transform="translate(8,3)">
+                        <text x="21" y="15" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:12px;cursor:pointer;color:#274b6d;fill:#274b6d;" text-anchor="start" zIndex="2">
+                        <tspan x="21">Principal</tspan></text>
+                        <rect rx="2" ry="2" fill="#2f7ed8" x="0" y="4" width="16" height="12" zIndex="3">
+                        </rect>
+                        </g>
+                        <g class="highcharts-legend-item" zIndex="1" transform="translate(8,17)">
+                        <text x="21" y="15" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:12px;cursor:pointer;color:#274b6d;fill:#274b6d;" text-anchor="start" zIndex="2">
+                        <tspan x="21">Interest</tspan>
+                        </text>
+                        <rect rx="2" ry="2" fill="#0d233a" x="0" y="4" width="16" height="12" zIndex="3">
+                        </rect>
+                        </g>
+                        </g>
+                        </g>
+                        </g>
+                        </svg>                       
+                    </div>
+                </div>
+            </div>
+            
             <table class="panel" align="center">               
                 <tbody><tr>
                         <td>Credit Card Balance</td>
                         <td align="right">
-                        <input type="text" name="balance" id="balance" value="2000" class="innormal indollar"></td>
+                            <input type="text" name="balance" id="balance" value="2000" class="innormal indollar"></td>
                         <td>&nbsp;</td>
                     </tr>
                     <tr>
                         <td>Interest Rate</td>
                         <td align="right">
-                        <input type="text" name="rate" id="rate" value="18" class="innormal inpct"></td>
+                            <input type="text" name="rate" id="rate" value="18" class="innormal inpct"></td>
                         <td>&nbsp;</td>
                     </tr>
                     <tr>
@@ -34,24 +77,94 @@
                     <tr>
                         <td valign="top">How you plan to payoff? </td>
                         <td colspan="2">
-                            <label for="payoffoption1"><input name="payoffoption" id="payoffoption1" value="0" type="radio" onclick="hideHideFixedPayment();" checked="">minimum payment</label><br>
-                            <label for="payoffoption2"><input name="payoffoption" id="payoffoption2" value="1" type="radio" onclick="showHideFixedPayment();">other fixed amount</label>
+                            <label for="payoffoption1"><input name="payoffoption" id="payoffoption1" value="0" type="radio" onclick="radioButtonClick(0);" checked="">minimum payment</label><br>
+                            <label for="payoffoption2"><input name="payoffoption" id="payoffoption2" value="1" type="radio" onclick="radioButtonClick(1);">other fixed amount</label>
                             <p id="fixedpayment" style="display: none;">
-                                &nbsp; &nbsp; &nbsp; &nbsp;pay <input type="text" name="fixedpaymentamount" value="35" class="in4char indollar"> per month
+                                &nbsp; &nbsp; &nbsp; &nbsp;pay <input type="text" id="fixedpaymentamount" value="35" class="in4char indollar"> per month
                             </p>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2" align="center"><input type="hidden" name="ctype" id="ctype" value="1"><input type="image" src="//d26tpo4cm8sb6k.cloudfront.net/img/calculate.png" value="Calculate" alt="Calculate"></td>
+                        <td colspan="2" align="center">
+                            <button src="//d26tpo4cm8sb6k.cloudfront.net/img/calculate.png" id="calculate">Calculate</button>
                         <td>&nbsp;</td>
                     </tr>
 
                 </tbody></table>
+            <h2>Payback within Certain Timeframe</h2>
+            <div id="result_section2" style="display: none;">
+                 
             
-                <div class="ct-chart">
-                
+            <p class="verybigtext" id="errorMsg2"></p>
+                <div class="line-chart2" >
+                    <div class="bigtext" style="text-align:center;"><b>Balance/Interest Graph</b></div>
+                    <div class="ct-chart2"></div>
+                   
+                </div>
+                <div class="pi-chart2">
+                    <div class="bigtext" style="text-align:center;"><b>Breakdown</b></div>
+                    <div class="ct-chart-pi2"></div>
+                    <div class="message_container" >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="155" height="215">
+                        <g class="highcharts-legend" zIndex="7" transform="translate(342,13)"><rect rx="5" ry="5" fill="#FCFFC5" x="0.5" y="0.5" width="81" height="38" stroke="#909090" stroke-width="1" visibility="visible"></rect><g zIndex="1"><g><g class="highcharts-legend-item" zIndex="1" transform="translate(8,3)"><path fill="none" d="M 0 11 L 16 11" stroke="#2f7ed8" stroke-width="4"></path><text x="21" y="15" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:12px;cursor:pointer;color:#274b6d;fill:#274b6d;" text-anchor="start" zIndex="2"><tspan x="21">Balance</tspan></text></g><g class="highcharts-legend-item" zIndex="1" transform="translate(8,17)"><path fill="none" d="M 0 11 L 16 11" stroke="#0d233a" stroke-width="4"></path><text x="21" y="15" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:12px;cursor:pointer;color:#274b6d;fill:#274b6d;" text-anchor="start" zIndex="2"><tspan x="21">Interest</tspan></text></g></g></g></g>
+                      </svg>
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="155" height="215" style="margin-top: -120">
+                        <g class="highcharts-legend" zIndex="7" transform="translate(36,158)">
+                        <rect rx="5" ry="5" fill="none" x="0.5" y="0.5" width="82" height="38" stroke="#909090" stroke-width="1" visibility="visible"></rect>
+                        <g zIndex="1">
+                        <g>
+                        <g class="highcharts-legend-item" zIndex="1" transform="translate(8,3)">
+                        <text x="21" y="15" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:12px;cursor:pointer;color:#274b6d;fill:#274b6d;" text-anchor="start" zIndex="2">
+                        <tspan x="21">Principal</tspan></text>
+                        <rect rx="2" ry="2" fill="#2f7ed8" x="0" y="4" width="16" height="12" zIndex="3">
+                        </rect>
+                        </g>
+                        <g class="highcharts-legend-item" zIndex="1" transform="translate(8,17)">
+                        <text x="21" y="15" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:12px;cursor:pointer;color:#274b6d;fill:#274b6d;" text-anchor="start" zIndex="2">
+                        <tspan x="21">Interest</tspan>
+                        </text>
+                        <rect rx="2" ry="2" fill="#0d233a" x="0" y="4" width="16" height="12" zIndex="3">
+                        </rect>
+                        </g>
+                        </g>
+                        </g>
+                        </g>
+                        </svg>                       
+                    </div>
+                </div>
             </div>
+            
+           
+            
+            <table class="panel" align="center">
+                <form action="/credit-card-calculator.html#time"></form>
+                <tbody><tr>
+                        <td>Credit Card Balance</td>
+                        <td align="right"><input type="text" id="balance2" value="2000" class="innormal indollar"></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>Interest Rate</td>
+                        <td align="right"><input type="text" id="rate2" value="18" class="innormal inpct"></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>Payback in</td>
+                        <td align="right"><input type="text" id="year2" value="3" class="innormal"></td>
+                        <td>years</td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td align="right"><input type="text" id="month2" value="0" class="innormal"></td>
+                        <td>months</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" align="center"><input type="hidden" name="ctype" value="2">
+                             <button src="//d26tpo4cm8sb6k.cloudfront.net/img/calculate.png" id="calculatePeriod">Calculate</button>
+                    </tr>
 
+                </tbody></table>
         </div>
+        <script src="./js/index.js" ></script> 
     </body>
 </html>
