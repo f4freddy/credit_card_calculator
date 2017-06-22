@@ -271,15 +271,18 @@ function ploatMap2() {
   }, {
     axisX: {
       low: 0,
+      type: Chartist.FixedScaleAxis,
+      ticks: xAxisData,
+      high: xAxisData[xAxisData.length-1],
       labelInterpolationFnc: function (value) {
-        if(value % 1 !== 0){
-          value = parseFloat(value.toFixed(1));
-        }
         if (index - 1 < 60) {
-          
-          return (xAxisData.indexOf(value) > -1) ? value + 'mo' : null;
+          return  value + 'mo';
         } else {
-          return (xAxisData.indexOf(value) > -1) ? (value / 12) + 'yr' : null;
+          let year = (value / 12);
+          if (year % 1 !== 0) {
+            year = parseFloat(year.toFixed(1));
+          }
+          return  year + 'yr';
         }
       }
     },

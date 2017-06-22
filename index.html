@@ -16,14 +16,21 @@
             <div id="result_section" style="display: none;">
                 <div class="line-chart" >
                     <div class="bigtext" style="text-align:center;"><b>Balance/Interest Graph</b></div>
-                   
+                    <div class="data-container">
+                        <svg height="100%" width="100%">
+                            <line x1="2" y1="10" x2="20" y2="10" style="stroke:rgb(47,126,216);stroke-width:4"></line>
+                            <text x="25" y="15" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:12px;cursor:pointer;color:#274b6d;fill:#274b6d;" text-anchor="start" zIndex="2"><tspan x="25">Balance</tspan></text>
+
+                            <line x1="2" y1="30" x2="20" y2="30" style="stroke:rgb(13,53,58);stroke-width:4"></line>
+                            <text x="25" y="35" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:12px;cursor:pointer;color:#274b6d;fill:#274b6d;" text-anchor="start" zIndex="2"><tspan x="25">Interest</tspan></text>
+                        </svg>
+                    </div>
                     <div class="ct-chart"></div>
-                   
                 </div>
                 <div class="pi-chart">
                     <div class="bigtext" style="text-align:center;"><b>Breakdown</b></div>
                     <div class="ct-chart-pi"></div>
-                    <div class="message_container" >
+                    <div class="message_container" >                        
                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="155" height="215" style="margin-top: -120">
                         <g class="highcharts-legend" zIndex="7" transform="translate(36,158)">
                         <rect rx="5" ry="5" fill="none" x="0.5" y="0.5" width="82" height="38" stroke="#909090" stroke-width="1" visibility="visible"></rect>
@@ -98,6 +105,15 @@
             <p class="verybigtext" id="errorMsg2"></p>
                 <div class="line-chart2" >
                     <div class="bigtext" style="text-align:center;"><b>Balance/Interest Graph</b></div>
+                    <div class="data-container">
+                        <svg height="100%" width="100%">
+                            <line x1="2" y1="10" x2="20" y2="10" style="stroke:rgb(47,126,216);stroke-width:4"></line>
+                            <text x="25" y="15" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:12px;cursor:pointer;color:#274b6d;fill:#274b6d;" text-anchor="start" zIndex="2"><tspan x="25">Balance</tspan></text>
+
+                            <line x1="2" y1="30" x2="20" y2="30" style="stroke:rgb(13,53,58);stroke-width:4"></line>
+                            <text x="25" y="35" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:12px;cursor:pointer;color:#274b6d;fill:#274b6d;" text-anchor="start" zIndex="2"><tspan x="25">Interest</tspan></text>
+                        </svg>
+                    </div>
                     <div class="ct-chart2"></div>
                    
                 </div>
@@ -105,9 +121,6 @@
                     <div class="bigtext" style="text-align:center;"><b>Breakdown</b></div>
                     <div class="ct-chart-pi2"></div>
                     <div class="message_container" >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="155" height="215">
-                        <g class="highcharts-legend" zIndex="7" transform="translate(342,13)"><rect rx="5" ry="5" fill="#FCFFC5" x="0.5" y="0.5" width="81" height="38" stroke="#909090" stroke-width="1" visibility="visible"></rect><g zIndex="1"><g><g class="highcharts-legend-item" zIndex="1" transform="translate(8,3)"><path fill="none" d="M 0 11 L 16 11" stroke="#2f7ed8" stroke-width="4"></path><text x="21" y="15" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:12px;cursor:pointer;color:#274b6d;fill:#274b6d;" text-anchor="start" zIndex="2"><tspan x="21">Balance</tspan></text></g><g class="highcharts-legend-item" zIndex="1" transform="translate(8,17)"><path fill="none" d="M 0 11 L 16 11" stroke="#0d233a" stroke-width="4"></path><text x="21" y="15" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:12px;cursor:pointer;color:#274b6d;fill:#274b6d;" text-anchor="start" zIndex="2"><tspan x="21">Interest</tspan></text></g></g></g></g>
-                      </svg>
                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="155" height="215" style="margin-top: -120">
                         <g class="highcharts-legend" zIndex="7" transform="translate(36,158)">
                         <rect rx="5" ry="5" fill="none" x="0.5" y="0.5" width="82" height="38" stroke="#909090" stroke-width="1" visibility="visible"></rect>
@@ -160,7 +173,7 @@
                     </tr>
                     <tr>
                         <td colspan="3" align="center"><input type="hidden" name="ctype" value="2">
-                             <button src="//d26tpo4cm8sb6k.cloudfront.net/img/calculate.png" id="calculatePeriod">Calculate</button>
+                        <button src="//d26tpo4cm8sb6k.cloudfront.net/img/calculate.png" id="calculatePeriod">Calculate</button>
                     </tr>
 
                 </tbody></table>
