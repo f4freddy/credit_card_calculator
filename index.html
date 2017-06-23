@@ -2,61 +2,34 @@
     <head>
         <link rel="stylesheet" type="text/css" href="./css/style.css">
         <script src="./js/jquery-3.2.1.min.js" ></script> 
-        <script src="./js/ss.js" ></script>
+        <script src="./js/highchart.js" ></script>
         <title>Credit Card Calculator</title>
     </head>
     <body>
-        
-        <div id="content">
+
+        <div id="contents">
+            <h1>Credit Card Calculator</h1>
             <h2>Payback a Certain Amount</h2>
-            
+
             <p class="verybigtext" id="errorMsg"></p>
             <p class="verybigtext" id="errorMsg3"></p>
-            
-            <div id="result_section" style="display: none;">
-                <div class="line-chart" >
-                    <div class="bigtext" style="text-align:center;"><b>Balance/Interest Graph</b></div>
-                    <div class="data-container">
-                        <svg height="100%" width="100%">
-                            <line x1="2" y1="10" x2="20" y2="10" style="stroke:rgb(47,126,216);stroke-width:4"></line>
-                            <text x="25" y="15" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:12px;cursor:pointer;color:#274b6d;fill:#274b6d;" text-anchor="start" zIndex="2"><tspan x="25">Balance</tspan></text>
 
-                            <line x1="2" y1="30" x2="20" y2="30" style="stroke:rgb(13,53,58);stroke-width:4"></line>
-                            <text x="25" y="35" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:12px;cursor:pointer;color:#274b6d;fill:#274b6d;" text-anchor="start" zIndex="2"><tspan x="25">Interest</tspan></text>
-                        </svg>
-                    </div>
-                    <div class="ct-chart"></div>
-                </div>
-                <div class="pi-chart">
-                    <div class="bigtext" style="text-align:center;"><b>Breakdown</b></div>
-                    <div class="ct-chart-pi"></div>
-                    <div class="message_container" >                        
-                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="155" height="215" style="margin-top: -120">
-                        <g class="highcharts-legend" zIndex="7" transform="translate(36,158)">
-                        <rect rx="5" ry="5" fill="none" x="0.5" y="0.5" width="82" height="38" stroke="#909090" stroke-width="1" visibility="visible"></rect>
-                        <g zIndex="1">
-                        <g>
-                        <g class="highcharts-legend-item" zIndex="1" transform="translate(8,3)">
-                        <text x="21" y="15" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:12px;cursor:pointer;color:#274b6d;fill:#274b6d;" text-anchor="start" zIndex="2">
-                        <tspan x="21">Principal</tspan></text>
-                        <rect rx="2" ry="2" fill="#2f7ed8" x="0" y="4" width="16" height="12" zIndex="3">
-                        </rect>
-                        </g>
-                        <g class="highcharts-legend-item" zIndex="1" transform="translate(8,17)">
-                        <text x="21" y="15" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:12px;cursor:pointer;color:#274b6d;fill:#274b6d;" text-anchor="start" zIndex="2">
-                        <tspan x="21">Interest</tspan>
-                        </text>
-                        <rect rx="2" ry="2" fill="#0d233a" x="0" y="4" width="16" height="12" zIndex="3">
-                        </rect>
-                        </g>
-                        </g>
-                        </g>
-                        </g>
-                        </svg>                       
+            <div id="result_section" style="display: none;">
+                <div id="clear"></div><div id="contentout"><div id="content">
+
+                        <div class="leftchart">
+                            <div class="bigtext" style="text-align:center;"><b>Balance/Interest Graph</b></div>
+                            <div id="cchartdiv" style="min-width: 320px; height: 220px; margin: 0 auto"></div>
+                        </div>
+                        <div class="rightpie">
+                            <div class="bigtext" style="text-align:center;"><b>Breakdown</b></div>
+                            <div id="cpiechartdiv" style="min-width: 155px; height: 250px; margin: 0 auto"></div>
+                        </div>
+                        <div id="clear"></div>
                     </div>
                 </div>
             </div>
-            
+
             <table class="panel" align="center">               
                 <tbody><tr>
                         <td>Credit Card Balance</td>
@@ -100,55 +73,29 @@
                 </tbody></table>
             <h2>Payback within Certain Timeframe</h2>
             <div id="result_section2" style="display: none;">
-                 
-            
-            <p class="verybigtext" id="errorMsg2"></p>
-                <div class="line-chart2" >
-                    <div class="bigtext" style="text-align:center;"><b>Balance/Interest Graph</b></div>
-                    <div class="data-container">
-                        <svg height="100%" width="100%">
-                            <line x1="2" y1="10" x2="20" y2="10" style="stroke:rgb(47,126,216);stroke-width:4"></line>
-                            <text x="25" y="15" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:12px;cursor:pointer;color:#274b6d;fill:#274b6d;" text-anchor="start" zIndex="2"><tspan x="25">Balance</tspan></text>
 
-                            <line x1="2" y1="30" x2="20" y2="30" style="stroke:rgb(13,53,58);stroke-width:4"></line>
-                            <text x="25" y="35" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:12px;cursor:pointer;color:#274b6d;fill:#274b6d;" text-anchor="start" zIndex="2"><tspan x="25">Interest</tspan></text>
-                        </svg>
-                    </div>
-                    <div class="ct-chart2"></div>
-                   
-                </div>
-                <div class="pi-chart2">
-                    <div class="bigtext" style="text-align:center;"><b>Breakdown</b></div>
-                    <div class="ct-chart-pi2"></div>
-                    <div class="message_container" >
-                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="155" height="215" style="margin-top: -120">
-                        <g class="highcharts-legend" zIndex="7" transform="translate(36,158)">
-                        <rect rx="5" ry="5" fill="none" x="0.5" y="0.5" width="82" height="38" stroke="#909090" stroke-width="1" visibility="visible"></rect>
-                        <g zIndex="1">
-                        <g>
-                        <g class="highcharts-legend-item" zIndex="1" transform="translate(8,3)">
-                        <text x="21" y="15" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:12px;cursor:pointer;color:#274b6d;fill:#274b6d;" text-anchor="start" zIndex="2">
-                        <tspan x="21">Principal</tspan></text>
-                        <rect rx="2" ry="2" fill="#2f7ed8" x="0" y="4" width="16" height="12" zIndex="3">
-                        </rect>
-                        </g>
-                        <g class="highcharts-legend-item" zIndex="1" transform="translate(8,17)">
-                        <text x="21" y="15" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:12px;cursor:pointer;color:#274b6d;fill:#274b6d;" text-anchor="start" zIndex="2">
-                        <tspan x="21">Interest</tspan>
-                        </text>
-                        <rect rx="2" ry="2" fill="#0d233a" x="0" y="4" width="16" height="12" zIndex="3">
-                        </rect>
-                        </g>
-                        </g>
-                        </g>
-                        </g>
-                        </svg>                       
+
+                <p class="verybigtext" id="errorMsg2"></p>
+                
+                <div >
+                <div id="clear"></div><div id="contentout"><div id="content">
+
+                        <div class="leftchart">
+                            <div class="bigtext" style="text-align:center;"><b>Balance/Interest Graph</b></div>
+                            <div id="cchartdiv" style="min-width: 320px; height: 220px; margin: 0 auto"></div>
+                        </div>
+                        <div class="rightpie">
+                            <div class="bigtext" style="text-align:center;"><b>Breakdown</b></div>
+                            <div id="cpiechartdiv" style="min-width: 155px; height: 250px; margin: 0 auto"></div>
+                        </div>
+                        <div id="clear"></div>
                     </div>
                 </div>
             </div>
-            
-           
-            
+            </div>
+
+
+
             <table class="panel" align="center">
                 <form action="/credit-card-calculator.html#time"></form>
                 <tbody><tr>
@@ -173,7 +120,7 @@
                     </tr>
                     <tr>
                         <td colspan="3" align="center"><input type="hidden" name="ctype" value="2">
-                        <button src="//d26tpo4cm8sb6k.cloudfront.net/img/calculate.png" id="calculatePeriod">Calculate</button>
+                            <button src="//d26tpo4cm8sb6k.cloudfront.net/img/calculate.png" id="calculatePeriod">Calculate</button>
                     </tr>
 
                 </tbody></table>

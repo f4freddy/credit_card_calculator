@@ -9,12 +9,10 @@
     }
 
     $('#errorMsg, #errorMsg3, #errorMsg2').hide();
-
-
     amounts = [];
     interests = [];
-    chartData1 = [];
-    chartData2 = [];
+    creditBalanceArray = [];
+    monthlyInterestArray = [];
     index = 0;
 
     var MinimumInterest = Math.round((balanceVal * rateVal) / (100 * 12));
@@ -26,6 +24,8 @@
     }
     $('#result_section').show();
     $('#result_section2').hide();
+    creditBalanceArray.push(balanceVal);
+    monthlyInterestArray.push(0);
     calculateInterest(balanceVal, rateVal, minimum, 0);
     if (fixedPaymentStatus) {
       calculateByFixedValue(balanceVal, rateVal, parseFloat($("#minimum").val()), 0, 0);
@@ -35,8 +35,8 @@
   $('#calculatePeriod').on('click', function () {
     amounts = [];
     interests = [];
-    chartData1 = [];
-    chartData2 = [];
+    creditBalanceArray = [];
+    monthlyInterestArray = [];
     emi = 0;
     index = 0;
     var balance2 = parseFloat($("#balance2").val());
@@ -48,14 +48,16 @@
     $('#errorMsg, #errorMsg3, #errorMsg2').hide();
     $('#result_section').hide();
     $('#result_section2').show();
+    creditBalanceArray.push(balance2);
+    monthlyInterestArray.push(0);
     calculateInterestByTendure(balance2, rate2, emi, 0);
   });
 
 })();
 
 var amounts = [];
-var chartData1 = [];
-var chartData2 = [];
+var creditBalanceArray = [];
+var monthlyInterestArray = [];
 var interests = [];
 var index = 0;
 var emi = 0;
@@ -110,8 +112,8 @@ function calculateInterest(amount, interstRate, fixedAmount, previousInterest) {
   }
 
   amounts.push(remainingAmount);
-  chartData1.push({x: index, y: remainingAmount});
-  chartData2.push({x: index, y: previousInterest});
+  creditBalanceArray.push(remainingAmount);
+  monthlyInterestArray.push(previousInterest);
   previousInterest += interest;
   interests.push(previousInterest);
   index++;
@@ -122,9 +124,9 @@ function calculateInterest(amount, interstRate, fixedAmount, previousInterest) {
     var msg = "It will take <font class='green'>" + getWords(index) + "</font> to payoff the balance. The total interest is <font class='green'>$" + formatCurrency(interests[index - 1]) + "</font>.";
     $('#errorMsg').html('<font class="black">' + msg + '</font>');
 
-    ploatMap();
+    ploatMap('#result_section #cchartdiv');
     var principalAmount = parseFloat($("#balance").val());
-    ploatPiMap(interests[index - 1], principalAmount);
+    ploatPiMap(interests[index - 1], principalAmount, '#result_section #cpiechartdiv');
   }
 }
 
@@ -156,8 +158,8 @@ function calculateInterestByTendure(amount, interstRate, fixedAmount, previousIn
   }
 
   amounts.push(remainingAmount);
-  chartData1.push({x: index, y: remainingAmount});
-  chartData2.push({x: index, y: previousInterest});
+  creditBalanceArray.push(remainingAmount);
+  monthlyInterestArray.push(previousInterest);
 
   previousInterest += interest;
 
@@ -184,148 +186,92 @@ function calculateInterestByTendure(amount, interstRate, fixedAmount, previousIn
     $('#errorMsg2').show();
     var msg = "<font class='green'>$" + formatCurrency(emi) + " per month </font> <font class='black'> is needed to payoff the balance in " + periode + ". Total interest is </font><font class='green'>$" + formatCurrency(interests[index - 1]) + "</font>.";
     $('#errorMsg2').html('<font class="black">' + msg + '</font>');
-    ploatMap2();
+    ploatMap('#result_section2 #cchartdiv');
     var principalAmount = parseFloat($("#balance2").val());
-    ploatPiMap2(interests[index - 1], principalAmount);
+    ploatPiMap(interests[index - 1], principalAmount, '#result_section2 #cpiechartdiv');
   }
 
 
 }
 
-function ploatMap() {
-
-  var xAxisData = createXlabels(index - 1);  
-  if(amounts[0] > interests[index - 1]){
-    var yAxisData = createYLabel(amounts[0]);
-  }else{
-  var yAxisData = createYLabel(interests[index - 1]);
+function ploatMap(seletor) {
+  if (index - 1 >= 60) {
+    var xAxisData = createXlabels(index);
+  } else {
+    var xAxisData = null;
   }
-  new Chartist.Line('.line-chart .ct-chart', {
-    labels: Array.from(Array(index), (e, i) => i),
-    series: [
-      {
-        name: 'series-1',
-        data: chartData1
-      },
-      {
-        name: 'series-2',
-        data: chartData2
-      }
-    ]
-  }, {
-    fullWidth: true,
-  chartPadding: {
-    right: 40
-  },
-    axisX: {
-      low: 0,
-      type: Chartist.FixedScaleAxis,
-      ticks: xAxisData,
-      high: xAxisData[xAxisData.length-1],
-      labelInterpolationFnc: function (value) {
-        if (index - 1 < 60) {
-          return  value + 'mo';
-        } else {
-          let year = (value / 12);
-          if (year % 1 !== 0) {
-            year = parseFloat(year.toFixed(1));
+
+  $(seletor).highcharts({
+    chart: {type: 'spline', plotBorderWidth: 1},
+    title: {text: ''},
+    xAxis: {min: 0, max: index, title: {text: ''}, gridLineWidth: 1,
+      tickPositions: xAxisData,
+
+      labels: {
+        formatter: function () {
+
+          if (index - 1 < 60) {
+            return  this.value + 'mo';
+          } else {
+            let year = (this.value / 12);
+            if (year % 1 !== 0) {
+              year = parseFloat(year.toFixed(1));
+            }
+            return  year + 'yr';
           }
-          return  year + 'yr';
         }
       }
     },
-    axisY: {
-      type: Chartist.FixedScaleAxis,
-      ticks: yAxisData,
-      low: 0,
-      high: yAxisData[3],
-      labelInterpolationFnc: function (value) {
-        if (parseFloat(value) >= 1000) {
-          return '$' + parseFloat(value / 1000) + 'K';
-        }
-        return '$' + value;
-      }
-    }
-  });
-
-}
-function ploatMap2() {
-  var xAxisData = createXlabels(index - 1);
-  if(amounts[0] > interests[index - 1]){
-    var yAxisData = createYLabel(amounts[0]);
-  }else{
-    var yAxisData = createYLabel(interests[index - 1]);
-  }
-  new Chartist.Line('.ct-chart2', {
-    labels: Array.from(Array(index), (e, i) => i),
-    series: [
-      {
-        name: 'series-1',
-        data: chartData1
-      },
-      {
-        name: 'series-2',
-        data: chartData2
-      }
-    ]
-  }, {
-    axisX: {
-      low: 0,
-      type: Chartist.FixedScaleAxis,
-      ticks: xAxisData,
-      high: xAxisData[xAxisData.length-1],
-      labelInterpolationFnc: function (value) {
-        if (index - 1 < 60) {
-          return  value + 'mo';
-        } else {
-          let year = (value / 12);
-          if (year % 1 !== 0) {
-            year = parseFloat(year.toFixed(1));
-          }
-          return  year + 'yr';
+    yAxis: {
+      min: 0, title: {text: ''}, gridLineWidth: 1,
+      labels: {
+        formatter: function () {
+          tempVal = this.value;
+          if (this.value > 999)
+            tempVal = (this.value / 1000).toFixed(1) + 'K';
+          if (this.value > 999999)
+            tempVal = (this.value / 1000000).toFixed(1) + 'M';
+          return '$' + tempVal;
         }
       }
     },
-    axisY: {
-      type: Chartist.FixedScaleAxis,
-      ticks: yAxisData,
-      low: 0,
-      high: yAxisData[3],
-      labelInterpolationFnc: function (value) {
-        if (parseFloat(value) >= 1000) {
-          return '$' + parseFloat(value / 1000) + 'K';
-        }
-        return '$' + value;
-      }
-    }
+    tooltip: {enabled: false, formatter: function () {
+        return this.series.name + ': $' + this.y;
+      }},
+    plotOptions: {spline: {lineWidth: 4, states: {hover: {lineWidth: 3}}, marker: {enabled: false}}},
+    legend: {layout: 'vertical', align: 'right', verticalAlign: 'top', floating: true, backgroundColor: '#FCFFC5', borderWidth: 1, x: -10, y: 3},
+    series: [
+      {name: 'Balance', data: creditBalanceArray},
+      {name: 'Interest', data: monthlyInterestArray}
+    ]
   });
 }
 
-function ploatPiMap(interest, amount) {
-  var data = {series: [amount, interest]};
-  var sum = function (a, b) {
-    return a + b
-  };
-
-  new Chartist.Pie('.ct-chart-pi', data, {
-    labelInterpolationFnc: function (value) {
-      return Math.round(value / data.series.reduce(sum) * 100) + '%';
-    }
+function ploatPiMap(interest, amount, selector) {
+  $(selector).highcharts({
+    renderTo: 'cpiechartdiv',
+    title: {text: ''},
+    tooltip: {formatter: function () {
+        return this.point.name + '<br><b>' + this.percentage.toFixed(1) + ' %</b><br>$' + this.y;
+      }},
+    plotOptions: {pie: {allowPointSelect: true, cursor: 'pointer', showInLegend: true, center: ["50%", "18%"],
+        dataLabels: {color: '#eeeeee', connectorColor: '#FFFFFF', connectorPadding: -55, distance: -12, softConnector: false, formatter: function () {
+            return this.percentage.toFixed(0) + '%';
+          }}
+      }},
+    legend: {
+      layout: 'vertical',
+      y: -38,
+      floating: true
+    },
+    series: [{
+        type: 'pie',
+        name: 'Share',
+        data: [['Principal', formatAmount(amount)], ['Interest', formatAmount(interest)]]
+      }]
   });
 };
 
-function ploatPiMap2(interest, amount) {
-  var data = {series: [amount, interest]};
-  var sum = function (a, b) {
-    return a + b;
-  };
-
-  new Chartist.Pie('.ct-chart-pi2', data, {
-    labelInterpolationFnc: function (value) {
-      return Math.round(value / data.series.reduce(sum) * 100) + '%';
-    }
-  });
-};
 
 function getWords(monthCount) {
   function getPlural(number, word) {
@@ -356,67 +302,34 @@ function radioButtonClick(value) {
   }
 }
 
-function createYLabel(maxAmount) {
-  var length = parseInt(maxAmount).toString().length;
-  var firstWord = parseInt(maxAmount.toString().charAt(0));
-  var newNum = ((firstWord + 1) % 3 === 0) ? (firstWord + 1) : ((firstWord + 1) - ((firstWord + 1) % 3)) + 3;
-
-  var naM = pad(newNum, length) / 3;
-  return [0, naM, 2 * naM, 3 * naM]
-}
-
-function pad(n, len) {
-  len--;
-  for (i = 0; i < len; i++) {
-    n = n + '0';
-  }
-  return n;
-}
 
 function createXlabels(noOfMonths) {
   var indexValue = 4;
   var status = false;
+  var newNumb = (noOfMonths - (noOfMonths % 12));
 
-  if (noOfMonths < 60) {
-    var numb = noOfMonths;
-    if (numb % 5 === 0) {
-      indexValue = 5;
-      status = true;
-    } else if (numb % 4 === 0) {
-      indexValue = 4;
-      status = true;
-    } else if (numb % 3 === 0) {
-      indexValue = 3;
-      status = true;
-    }
-
-  } else {
-    var numb = (noOfMonths - (noOfMonths % 12));
-
-    if (numb % 5 === 0) {
-      indexValue = 5;
-      status = true;
-    } else if (numb % 4 === 0) {
-      indexValue = 4;
-      status = true;
-    } else if (numb % 3 === 0) {
-      indexValue = 3;
-      status = true;
-    }
+  var numb = ((newNumb / 12) - ((newNumb / 12) % 2)) * 12;
+  if (numb % 5 === 0) {
+    indexValue = 5;
+  } else if (numb % 4 === 0) {
+    indexValue = 4;
+  } else if (numb % 3 === 0) {
+    indexValue = 3;
   }
-  var diviser = (status) ? (numb / indexValue) : ((numb - (numb % indexValue)) / indexValue);
+
+  var diviser = numb / indexValue;
   var returnArray = [];
   returnArray.push(0);
   for (var i = diviser; i <= numb; i += diviser) {
     returnArray.push(i);
   }
-  
-  if ((!status) || (numb !== noOfMonths)) {
-    if(numb !== noOfMonths){
-      returnArray.push(noOfMonths);
-    }else {
-    returnArray.push(noOfMonths + 1);
-  }
+
+  if ((numb !== noOfMonths)) {
+    returnArray.push(noOfMonths);
   }
   return returnArray;
 }
+
+
+
+	
