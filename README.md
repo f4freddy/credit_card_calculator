@@ -1,1 +1,1 @@
-program to calculate emi
+program to calculate emi and interest
